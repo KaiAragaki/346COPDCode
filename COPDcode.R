@@ -1,15 +1,13 @@
+# Load libraries
+library(limma)
+library(tidyverse)
 
-# Reads in data
+# Read in data
 exp.copd <- read.table("ECLIPSE_Blood_Exp_COPD.txt")
 exp.smok <- read.table("ECLIPSE_Blood_Exp_SmokerControl.txt")
 
 # Stick the tables together side by side into one megatable
 full.exp <- cbind(exp.smok,exp.copd)
-
-# Load limma
-library(limma)
-library(tidyverse)
-
 
 # Makes a big factor list that looks like "CTRL CTRL CTRL.... COPD COPD COPD..."
 lev <- c("CTRL","COPD")
