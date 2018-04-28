@@ -62,6 +62,6 @@ differenceBetween <- topCopdMeans[,2] - topSmokMeans[,2]
 differenceBetween[,2] <- topCopdMeans[,1]
 print(differenceBetween)
 
-ggplot(differenceBetween, aes(x = value, y = value.1))+
-  geom_tile(aes(fill = value.1), color = "white") +
-  scale_fill_gradient(low = "white", high = "steelblue")
+# ggplot(differenceBetween, aes(x = value, y = value.1))+
+#   geom_tile(aes(fill = value.1), color = "white") +
+#   scale_fill_gradient(low = "white", high = "steelblue")
