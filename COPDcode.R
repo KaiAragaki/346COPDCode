@@ -28,7 +28,9 @@ cont.diff <- makeContrasts(COPD-CTRL, levels=design)
 fit2 <- contrasts.fit(fit,cont.diff)
 fit3 <- eBayes(fit2)
 
-top.copd <- topTable(fit3,adjust="BH",number=100)
+top.copd <- topTable(fit3,adjust="BH",number=nrow(exp.copd))
+
+top.copd <- filter(top.copd, adj.P.Val < 0.05)
 
 copd.deg <- rownames(top.copd)[top.copd[,5]<0.05]
 
