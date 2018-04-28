@@ -42,6 +42,7 @@ c <- length(copd.drivers.onarray)-a
 d <- nrow(exp.copd)-a-b-c
 
 ftest <- fisher.test(array(c(a,b,c,d),dim=c(2,2)),alternative="greater") ## P = 0.71
+grepSearch <- matrix()
 
 #Find the means of all the rows:
 copdMeans <- as.tibble(rowMeans(exp.copd))
