@@ -29,10 +29,11 @@ fit2 <- contrasts.fit(fit,cont.diff)
 fit3 <- eBayes(fit2)
 
 top.copd <- topTable(fit3,adjust="BH",number=nrow(exp.copd))
+top.copd[,7] <- rownames(top.copd)
 
 top.copd <- filter(top.copd, adj.P.Val < 0.05)
 
-copd.deg <- rownames(top.copd)[top.copd[,5]<0.05]
+#copd.deg <- rownames(top.copd)[top.copd[,5]<0.05]
 
 copd.drivers <- t(read.table("COPD_drivers.txt"))[1,]
 
@@ -55,14 +56,13 @@ smokMeans[,2] <- smokMeans[,1]
 smokMeans[,1] <- rownames(exp.smok)
 topCopdRownames <- as.tibble(rownames(top.copd))
 for (i in 1:nrow(topCopdRownames)){
-  grepSearch[i] <- which(copdMeans[,1] == as.list(topCopdRownames[i,]))
+  grepSearch[i] <- which(copdMeans[,1] == as.list(top.copd[i,7]))
 }
 topCopdMeans <- copdMeans[grepSearch,]
 topSmokMeans <- smokMeans[grepSearch,] #Assumes the rows are in the same order
 
 differenceBetween <- topCopdMeans[,2] - topSmokMeans[,2]
 differenceBetween[,2] <- topCopdMeans[,1]
-print(differenceBetween)
 
 # ggplot(differenceBetween, aes(x = value, y = value.1))+
 #   geom_tile(aes(fill = value.1), color = "white") +
