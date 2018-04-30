@@ -1,0 +1,37 @@
+# Read in DAVID tsv
+library(tidyverse)
+library(ggplot2)
+
+davidDataLocation <- "https://raw.githubusercontent.com/KaiAragaki/346COPDCode/master/DAVID100 Output tsv"
+download.file(davidDataLocation, "myFile.tsv")
+davidData <- read_tsv("myFile.tsv")
+davidData <- davidData %>%
+  separate(Genes, c(LETTERS), sep = ", ", fill = 'right') %>%
+  gather("temp", "value", LETTERS) %>%
+  filter(!is.na(value))
+davidData <- davidData[,-13]
+differenceBetween <- as.tibble(differenceBetween)
+joinedData <- merge(davidData, differenceBetween, sort = FALSE, all.x = TRUE, by = "value")
+joinedData <- joinedData %>%
+  group_by(Term) %>%
+  mutate(Mean = mean(value.1))
+
+for(i in 1:nrow(joinedData)){
+  joinedData[i,16] <- gsub("^.*?~", "", joinedData[i,3])
+}
+
+ggdata <- distinct(joinedData, V16, Mean, Count)
+
+p <- ggplot(ggdata, aes(x = reorder(V16, -Mean),y=Mean)) +
+  geom_col() +
+  theme_classic()+
+  xlab("GO Categories") +
+  ylab("Differential Expression") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
+b <- ggplot(ggdata, aes(x = reorder(V16, -Count), y = Count)) +
+  geom_col() +
+  xlab("GO Categories") +
+  theme_classic()+
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+print(b)
